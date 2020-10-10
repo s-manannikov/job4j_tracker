@@ -23,7 +23,7 @@ public class Library {
         }
         System.out.println(System.lineSeparator() + "Show only Clean Code:");
         for (Book b : lib) {
-            if (b.equals(clean)) {
+            if (b.getName().equals("Clean Code")) {
                 System.out.println(b.getName() + ". " + b.getPages() + " pages.");
             }
         }
