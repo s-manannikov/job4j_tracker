@@ -29,7 +29,6 @@ public class StartUI {
                 System.out.print("Enter new name: ");
                 String name = scanner.nextLine();
                 Item item = new Item(name);
-                tracker.replace(id, item);
                 if (tracker.replace(id, item)) {
                     System.out.println("The item has been edited.");
                 } else System.out.println("Error! Please try again!");
