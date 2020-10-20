@@ -18,25 +18,14 @@ public class ValidateInputTest {
         assertThat(selected, is(1));
     }
 
-    @Test(expected = NumberFormatException.class)
-    public void whenInvalidExit() {
+    @Test
+    public void whenInvalidInput2() {
         Output out = new StubOutput();
         Input in = new StubInput(
-                new String[] {"one"}
+                new String[] {"one", "1"}
         );
-        Tracker tracker = new Tracker();
-        UserAction[] actions = {
-                new ExitAction(out)
-        };
-        new StartUI(out).init(in, tracker, actions);
-        assertThat(out.toString(), is(
-                String.format(
-                        "Menu.%n"
-                                + "0. ==== Exit ====%n"
-                                + "Wrong input, you can select: 0 .. 0%n"
-                                + "Menu.%n"
-                                + "0. ==== Exit ====%n"
-                )
-        ));
+        ValidateInput input = new ValidateInput(out, in);
+        input.askInt("Enter menu:");
+        assertThat(out.toString(), is("Please enter validate data again.\n"));
     }
 }
