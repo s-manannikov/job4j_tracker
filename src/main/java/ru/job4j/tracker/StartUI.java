@@ -1,6 +1,6 @@
 package ru.job4j.tracker;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 
 public class StartUI {
@@ -14,7 +14,7 @@ public class StartUI {
         boolean run = true;
         while (run) {
             this.showMenu(actions);
-            int select = Integer.valueOf(input.askStr("Select: "));
+            int select = Integer.parseInt(input.askStr("Select: "));
             if (select < 0 || select >= actions.size()) {
                 out.println("Wrong input, you can select: 0 .. " + (actions.size() - 1));
                 continue;
@@ -35,15 +35,14 @@ public class StartUI {
         Output output = new ConsoleOutput();
         Input input = new ValidateInput(output, new ConsoleInput());
         Tracker tracker = new Tracker();
-        UserAction[] actions = {
-                new CreateAction(output),
-                new ShowAction(output),
-                new ReplaceAction(output),
-                new DeleteAction(output),
-                new FindByIdAction(output),
-                new FindByNameAction(output),
-                new ExitAction(output)
-        };
-        new StartUI(output).init(input, tracker, Arrays.asList(actions));
+        List<UserAction> actions = new ArrayList<>();
+        actions.add(new CreateAction(output));
+        actions.add(new ShowAction(output));
+        actions.add(new ReplaceAction(output));
+        actions.add(new DeleteAction(output));
+        actions.add(new FindByIdAction(output));
+        actions.add(new FindByNameAction(output));
+        actions.add(new ExitAction(output));
+        new StartUI(output).init(input, tracker, actions);
     }
 }

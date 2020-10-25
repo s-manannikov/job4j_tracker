@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Tracker {
-    private final List<Item> items = new ArrayList<>(100);
+    private final List<Item> items = new ArrayList<>();
     private int ids = 1;
 
     public Item add(Item item) {
@@ -20,15 +20,14 @@ public class Tracker {
     }
 
     public List<Item> findAll() {
-        return List.copyOf(items);
+        return items;
     }
 
     public List<Item> findByName(String key) {
         List<Item> itemsByNames = new ArrayList<>(items.size());
-        for (int i = 0; i < items.size(); i++) {
-            Item item = items.get(i);
+        for (Item item : items) {
             if (item.getName().equals(key)) {
-                itemsByNames.add(items.get(i));
+                itemsByNames.add(item);
             }
         }
         return itemsByNames;
