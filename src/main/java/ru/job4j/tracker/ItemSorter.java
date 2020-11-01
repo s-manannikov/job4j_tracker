@@ -4,10 +4,13 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-
 public class ItemSorter {
     public static void main(String[] args) {
-        List<Item> items = Arrays.asList(new Item(2, "two"), new Item(7, "seven"), new Item(5, "five"));
+        List<Item> items = Arrays.asList(
+                new Item(2, "two"),
+                new Item(7, "seven"),
+                new Item(5, "five")
+        );
         items.sort(new ItemByNameIncrease());
         System.out.println("Sort by names in ascending order: " + items);
         items.sort(new ItemByNameDecrease());

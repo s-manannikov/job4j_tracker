@@ -1,6 +1,6 @@
 package ru.job4j.oop;
 
-public final class LiquidationProduct {
+/* public final class LiquidationProduct {
     private Product product;
 
     public LiquidationProduct(String name, int price) {
@@ -11,3 +11,5 @@ public final class LiquidationProduct {
         return product.label();
     }
 }
+
+ */

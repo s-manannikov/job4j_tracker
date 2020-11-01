@@ -22,7 +22,9 @@ public class FindByNameAction implements UserAction {
             for (int i = 0; i < items.size(); i++) {
                 out.println(items.get(i));
             }
-        } else out.println("Name not found!");
+        } else {
+            out.println("Name not found!");
+        }
         return true;
     }
 }

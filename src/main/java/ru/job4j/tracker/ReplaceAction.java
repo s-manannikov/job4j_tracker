@@ -20,7 +20,9 @@ public class ReplaceAction implements UserAction {
         tracker.replace(id, item);
         if (tracker.replace(id, item)) {
             out.println("The item has been edited.");
-        } else out.println("Error! Please try again!");
+        } else {
+            out.println("Error! Please try again!");
+        }
         return true;
     }
 }

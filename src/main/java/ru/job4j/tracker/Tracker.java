@@ -15,7 +15,9 @@ public class Tracker {
 
     public Item findById(int id) {
         int index = indexOf(id);
-        if (index != -1) return items.get(index);
+        if (index != -1) {
+            return items.get(index);
+        }
         return null;
     }
 

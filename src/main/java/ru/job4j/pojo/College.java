@@ -8,6 +8,7 @@ public class College {
         student.setName("Ivanov Ivan Ivanovich");
         student.setGroup(1234);
         student.setCreated(new Date());
-        System.out.println(student.getName() +". Group: " + student.getGroup() + ". " + student.getCreated());
+        System.out.println(student.getName() + ". Group: "
+                + student.getGroup() + ". " + student.getCreated());
     }
 }

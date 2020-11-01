@@ -48,8 +48,8 @@ public class BankService {
             return rsl;
         }
 
-        public boolean transferMoney (String srcPassport, String srcRequisite,
-                String destPassport, String destRequisite,double amount) {
+        public boolean transferMoney(String srcPassport, String srcRequisite,
+                String destPassport, String destRequisite, double amount) {
             boolean rsl = false;
             Account srcAcc = findByRequisite(srcPassport, srcRequisite);
             Account destAcc = findByRequisite(destPassport, destRequisite);
