@@ -1,15 +1,15 @@
 package ru.job4j.lambda;
 
-import java.util.function.Function;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
 
 public class SearchAtt {
 
     public static List<Attachment> filterSize(List<Attachment> list) {
-        Function<Attachment, Boolean> func = new Function<>() {
+        Predicate<Attachment> func = new Predicate<>() {
             @Override
-            public Boolean apply(Attachment attachment) {
+            public boolean test(Attachment attachment) {
                 return attachment.getSize() > 100;
             }
         };
@@ -17,9 +17,9 @@ public class SearchAtt {
     }
 
     public static List<Attachment> filterName(List<Attachment> list) {
-        Function<Attachment, Boolean> func = new Function<>() {
+        Predicate<Attachment> func = new Predicate<>() {
             @Override
-            public Boolean apply(Attachment attachment) {
+            public boolean test(Attachment attachment) {
                 return attachment.getName().contains("bug");
             }
         };
@@ -28,11 +28,11 @@ public class SearchAtt {
 
     private static List<Attachment> filter(
             List<Attachment> list,
-            Function<Attachment, Boolean> func
+            Predicate<Attachment> func
     ) {
         List<Attachment> rsl = new ArrayList<>();
         for (Attachment att : list) {
-            if (func.apply(att)) {
+            if (func.test(att)) {
                 rsl.add(att);
             }
         }
