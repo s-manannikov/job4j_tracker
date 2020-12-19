@@ -13,12 +13,12 @@ public class ReplaceAction implements UserAction {
     }
 
     @Override
-    public boolean execute(Input input, Tracker tracker) {
-        int id = Integer.valueOf(input.askStr("Enter Id: "));
+    public boolean execute(Input input, Store tracker) {
+        int id = Integer.parseInt(input.askStr("Enter Id: "));
         String name = input.askStr("Enter new name: ");
         Item item = new Item(name);
-        tracker.replace(id, item);
-        if (tracker.replace(id, item)) {
+        tracker.replace(String.valueOf(id), item);
+        if (tracker.replace(String.valueOf(id), item)) {
             out.println("The item has been edited.");
         } else {
             out.println("Error! Please try again!");

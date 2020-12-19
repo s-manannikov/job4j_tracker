@@ -16,7 +16,7 @@ public class StartUITest {
         Input in = new StubInput(
                 new String[] {"0", "Item name", "1"}
         );
-        Tracker tracker = new Tracker();
+        MemTracker tracker = new MemTracker();
         UserAction[] actions = {
                 new CreateAction(out),
                 new ExitAction(out)
@@ -28,7 +28,7 @@ public class StartUITest {
     @Test
     public void whenReplaceItem() {
         Output out = new StubOutput();
-        Tracker tracker = new Tracker();
+        MemTracker tracker = new MemTracker();
         Item item = tracker.add(new Item("Replaced item"));
         String replacedName = "New item name";
         Input in = new StubInput(
@@ -45,7 +45,7 @@ public class StartUITest {
     @Test
     public void whenDeleteItem() {
         Output out = new StubOutput();
-        Tracker tracker = new Tracker();
+        MemTracker tracker = new MemTracker();
         Item item = tracker.add(new Item("Deleted item"));
         Input in = new StubInput(
                 new String[] {"0", String.valueOf(item.getId()), "1"}
@@ -64,7 +64,7 @@ public class StartUITest {
         Input in = new StubInput(
                 new String[] {"0"}
         );
-        Tracker tracker = new Tracker();
+        MemTracker tracker = new MemTracker();
         UserAction[] actions = {
                 new ExitAction(out)
         };
@@ -77,7 +77,7 @@ public class StartUITest {
 
     @Test
     public void whenShowAllItems() {
-        Tracker tracker = new Tracker();
+        MemTracker tracker = new MemTracker();
         Output out = new StubOutput();
         Item item = tracker.add(new Item("New item"));
         Input in = new StubInput(
@@ -100,7 +100,7 @@ public class StartUITest {
 
     @Test
     public void whenFindById() {
-        Tracker tracker = new Tracker();
+        MemTracker tracker = new MemTracker();
         Output out = new StubOutput();
         Item item = tracker.add(new Item("New item"));
         Input in = new StubInput(
@@ -123,7 +123,7 @@ public class StartUITest {
 
     @Test
     public void whenFindByName() {
-        Tracker tracker = new Tracker();
+        MemTracker tracker = new MemTracker();
         Output out = new StubOutput();
         Item item = tracker.add(new Item("New item"));
         Input in = new StubInput(
@@ -150,7 +150,7 @@ public class StartUITest {
         Input in = new StubInput(
                 new String[] {"10", "0"}
         );
-        Tracker tracker = new Tracker();
+        MemTracker tracker = new MemTracker();
         UserAction[] actions = {
                 new ExitAction(out)
         };
