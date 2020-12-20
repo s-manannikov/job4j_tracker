@@ -1,5 +1,6 @@
 package ru.job4j.tracker;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Arrays;
@@ -9,6 +10,12 @@ import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
 
 public class StartUITest {
+    private Store tracker = new SqlTracker();
+
+    @Before
+    public void init() {
+        tracker.init();
+    }
 
     @Test
     public void whenCreateItem() {
@@ -16,7 +23,6 @@ public class StartUITest {
         Input in = new StubInput(
                 new String[] {"0", "Item name", "1"}
         );
-        MemTracker tracker = new MemTracker();
         UserAction[] actions = {
                 new CreateAction(out),
                 new ExitAction(out)
@@ -28,7 +34,6 @@ public class StartUITest {
     @Test
     public void whenReplaceItem() {
         Output out = new StubOutput();
-        MemTracker tracker = new MemTracker();
         Item item = tracker.add(new Item("Replaced item"));
         String replacedName = "New item name";
         Input in = new StubInput(
@@ -45,7 +50,6 @@ public class StartUITest {
     @Test
     public void whenDeleteItem() {
         Output out = new StubOutput();
-        MemTracker tracker = new MemTracker();
         Item item = tracker.add(new Item("Deleted item"));
         Input in = new StubInput(
                 new String[] {"0", String.valueOf(item.getId()), "1"}
@@ -64,7 +68,6 @@ public class StartUITest {
         Input in = new StubInput(
                 new String[] {"0"}
         );
-        MemTracker tracker = new MemTracker();
         UserAction[] actions = {
                 new ExitAction(out)
         };
@@ -77,7 +80,6 @@ public class StartUITest {
 
     @Test
     public void whenShowAllItems() {
-        MemTracker tracker = new MemTracker();
         Output out = new StubOutput();
         Item item = tracker.add(new Item("New item"));
         Input in = new StubInput(
@@ -100,7 +102,6 @@ public class StartUITest {
 
     @Test
     public void whenFindById() {
-        MemTracker tracker = new MemTracker();
         Output out = new StubOutput();
         Item item = tracker.add(new Item("New item"));
         Input in = new StubInput(
@@ -123,7 +124,6 @@ public class StartUITest {
 
     @Test
     public void whenFindByName() {
-        MemTracker tracker = new MemTracker();
         Output out = new StubOutput();
         Item item = tracker.add(new Item("New item"));
         Input in = new StubInput(
@@ -150,7 +150,6 @@ public class StartUITest {
         Input in = new StubInput(
                 new String[] {"10", "0"}
         );
-        MemTracker tracker = new MemTracker();
         UserAction[] actions = {
                 new ExitAction(out)
         };
