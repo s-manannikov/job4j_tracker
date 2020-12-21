@@ -1,38 +1,57 @@
 package ru.job4j.tracker;
 
-import org.junit.Before;
 import org.junit.Test;
 
+import java.io.InputStream;
+import java.sql.Connection;
+import java.sql.DriverManager;
 import java.util.Arrays;
+import java.util.Properties;
 
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
 
 public class StartUITest {
-    private Store tracker = new SqlTracker();
 
-    @Before
-    public void init() {
-        tracker.init();
+    public Connection init() {
+        try (InputStream in = SqlTracker.class
+                .getClassLoader()
+                .getResourceAsStream("app.properties")) {
+            Properties config = new Properties();
+            config.load(in);
+            Class.forName(config.getProperty("driver-class-name"));
+            return DriverManager.getConnection(
+                    config.getProperty("url"),
+                    config.getProperty("username"),
+                    config.getProperty("password")
+            );
+        } catch (Exception e) {
+            throw new IllegalStateException(e);
+        }
     }
 
     @Test
     public void whenCreateItem() {
-        Output out = new StubOutput();
-        Input in = new StubInput(
-                new String[] {"0", "Item name", "1"}
-        );
-        UserAction[] actions = {
-                new CreateAction(out),
-                new ExitAction(out)
-        };
-        new StartUI(out).init(in, tracker, Arrays.asList(actions));
-        assertThat(tracker.findAll().get(0).getName(), is("Item name"));
+        try (SqlTracker tracker = new SqlTracker(ConnectionRollback.create(this.init()))) {
+            Output out = new StubOutput();
+            Input in = new StubInput(
+                    new String[]{"0", "Item name", "1"}
+            );
+            UserAction[] actions = {
+                    new CreateAction(out),
+                    new ExitAction(out)
+            };
+            new StartUI(out).init(in, tracker, Arrays.asList(actions));
+            assertThat(tracker.findAll().get(0).getName(), is("Item name"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Test
     public void whenReplaceItem() {
+        try (SqlTracker tracker = new SqlTracker(ConnectionRollback.create(this.init()))) {
         Output out = new StubOutput();
         Item item = tracker.add(new Item("Replaced item"));
         String replacedName = "New item name";
@@ -45,10 +64,14 @@ public class StartUITest {
         };
         new StartUI(out).init(in, tracker, Arrays.asList(actions));
         assertThat(tracker.findById(item.getId()).getName(), is(replacedName));
+        } catch (Exception e) {
+            e.printStackTrace();
+            }
     }
 
     @Test
     public void whenDeleteItem() {
+        try (SqlTracker tracker = new SqlTracker(ConnectionRollback.create(this.init()))) {
         Output out = new StubOutput();
         Item item = tracker.add(new Item("Deleted item"));
         Input in = new StubInput(
@@ -60,10 +83,14 @@ public class StartUITest {
         };
         new StartUI(out).init(in, tracker, Arrays.asList(actions));
         assertThat(tracker.findById(item.getId()), is(nullValue()));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Test
     public void whenExit() {
+        try (SqlTracker tracker = new SqlTracker(ConnectionRollback.create(this.init()))) {
         Output out = new StubOutput();
         Input in = new StubInput(
                 new String[] {"0"}
@@ -76,10 +103,14 @@ public class StartUITest {
                         "Menu." + System.lineSeparator()
                                 + "0. ==== Exit ====" + System.lineSeparator()
         ));
+    } catch (Exception e) {
+        e.printStackTrace();
+        }
     }
 
     @Test
     public void whenShowAllItems() {
+        try (SqlTracker tracker = new SqlTracker(ConnectionRollback.create(this.init()))) {
         Output out = new StubOutput();
         Item item = tracker.add(new Item("New item"));
         Input in = new StubInput(
@@ -98,10 +129,14 @@ public class StartUITest {
                                 + "Menu." + System.lineSeparator()
                                 + "0. ==== All items ====" + System.lineSeparator()
                                 + "1. ==== Exit ====" + System.lineSeparator()));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Test
     public void whenFindById() {
+        try (SqlTracker tracker = new SqlTracker(ConnectionRollback.create(this.init()))) {
         Output out = new StubOutput();
         Item item = tracker.add(new Item("New item"));
         Input in = new StubInput(
@@ -120,10 +155,14 @@ public class StartUITest {
                         + "Menu." + System.lineSeparator()
                         + "0. ==== Find item by Id ====" + System.lineSeparator()
                         + "1. ==== Exit ====" + System.lineSeparator()));
+    } catch (Exception e) {
+        e.printStackTrace();
+        }
     }
 
     @Test
     public void whenFindByName() {
+        try (SqlTracker tracker = new SqlTracker(ConnectionRollback.create(this.init()))) {
         Output out = new StubOutput();
         Item item = tracker.add(new Item("New item"));
         Input in = new StubInput(
@@ -142,10 +181,14 @@ public class StartUITest {
                         + "Menu." + System.lineSeparator()
                         + "0. ==== Find items by name ====" + System.lineSeparator()
                         + "1. ==== Exit ====" + System.lineSeparator()));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Test
     public void whenInvalidExit() {
+        try (SqlTracker tracker = new SqlTracker(ConnectionRollback.create(this.init()))) {
         Output out = new StubOutput();
         Input in = new StubInput(
                 new String[] {"10", "0"}
@@ -163,5 +206,8 @@ public class StartUITest {
                                 + "0. ==== Exit ====%n"
                 )
         ));
+    } catch (Exception e) {
+        e.printStackTrace();
+        }
     }
 }

@@ -15,9 +15,6 @@ public class SqlTracker implements Store {
         this.connection = connection;
     }
 
-    public SqlTracker() {
-    }
-
     @Override
     public void init() {
         try (InputStream in = SqlTracker.class.getClassLoader().getResourceAsStream(
