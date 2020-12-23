@@ -6,7 +6,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
-import java.util.stream.Collectors;
 
 public class SqlTracker implements Store {
     private Connection connection;
@@ -88,7 +87,8 @@ public class SqlTracker implements Store {
                 while (resultSet.next()) {
                     items.add(new Item(
                             resultSet.getInt("id"),
-                            resultSet.getString("name")
+                            resultSet.getString("name"),
+                            resultSet.getTimestamp("created").toLocalDateTime()
                     ));
                 }
             } catch (Exception e) {
@@ -102,17 +102,48 @@ public class SqlTracker implements Store {
 
     @Override
     public List<Item> findByName(String key) {
-        return findAll().stream()
-                .filter(i -> i.getName().equals(key))
-                .collect(Collectors.toList());
+        List<Item> items = new ArrayList<>();
+        try (PreparedStatement statement = connection.prepareStatement(
+                "select * from items where name = ?"
+        )) {
+            statement.setString(1, key);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    items.add(new Item(
+                            resultSet.getInt("id"),
+                            resultSet.getString("name"),
+                            resultSet.getTimestamp("created").toLocalDateTime()
+                    ));
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return items;
     }
 
     @Override
     public Item findById(int id) {
-        return findAll().stream()
-                .filter(i -> i.getId() == id)
-                .findFirst()
-                .orElse(null);
+        Item item = new Item();
+        try (PreparedStatement statement = connection.prepareStatement(
+                "select * from items where id = ?"
+        )) {
+            statement.setInt(1, id);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    item.setId(resultSet.getInt("id"));
+                    item.setName(resultSet.getString("name"));
+                    item.setCreated(resultSet.getTimestamp("created").toLocalDateTime());
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return item.getId() != 0 ? item : null;
     }
 
     @Override
