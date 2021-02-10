@@ -1,17 +1,13 @@
 package ru.job4j.tracker;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
-import static org.mockito.ArgumentMatchers.any;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 public class ReplaceActionTest {
 
-    @Ignore
     @Test
     public void whenReplaceItem() {
         Output out = new StubOutput();
@@ -20,13 +16,12 @@ public class ReplaceActionTest {
         String replacedName = "New item name";
         ReplaceAction rep = new ReplaceAction(out);
         Input input = mock(Input.class);
-        when(input.askInt(any(String.class))).thenReturn(1);
-        when(input.askStr(any(String.class))).thenReturn(replacedName);
+        when(input.askStr("Enter Id: ")).thenReturn("1");
+        when(input.askStr("Enter new name: ")).thenReturn(replacedName);
         rep.execute(input, tracker);
-        assertThat(tracker.findAll().get(0).getName(), is(replacedName));
+        assertEquals(tracker.findAll().get(0).getName(), replacedName);
     }
 
-    @Ignore
     @Test
     public void whenNotReplaced() {
         Output out = new StubOutput();
@@ -34,7 +29,8 @@ public class ReplaceActionTest {
         tracker.add(new Item("Replaced item"));
         ReplaceAction rep = new ReplaceAction(out);
         Input input = mock(Input.class);
+        when(input.askStr("Enter Id: ")).thenReturn("0");
         rep.execute(input, tracker);
-        assertThat(tracker.findAll().get(0).getName(), is("Replaced item"));
+        assertEquals(tracker.findAll().get(0).getName(), "Replaced item");
     }
 }
