@@ -44,7 +44,7 @@ public class HbmTracker implements Store, AutoCloseable {
         query.executeUpdate();
         session.getTransaction().commit();
         session.close();
-        return true;
+        return session.getTransaction().getStatus() == (TransactionStatus.COMMITTED);
     }
 
     @Override
