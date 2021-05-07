@@ -1,5 +1,7 @@
 package ru.job4j.tracker;
 
+import ru.job4j.react.Observe;
+
 import java.io.InputStream;
 import java.sql.*;
 import java.time.LocalDateTime;
@@ -98,6 +100,24 @@ public class SqlTracker implements Store {
             e.printStackTrace();
         }
         return items;
+    }
+
+    public void findAllByReact(Observe<Item> observe) {
+        try (PreparedStatement statement = connection.prepareStatement("select * from items")) {
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    observe.receive(new Item(
+                            resultSet.getInt("id"),
+                            resultSet.getString("name"),
+                            resultSet.getTimestamp("created").toLocalDateTime()
+                    ));
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
